@@ -39,7 +39,6 @@ function show(data){
 function filterData(myFilter){
 	h1.textContent=myFilter;
 	main.textContent="";
-	console.log(productlist);
 	let filterList = productlist.filter(product=>product.category == myFilter);
 	show(filterList);
 }
