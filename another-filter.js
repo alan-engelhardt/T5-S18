@@ -14,14 +14,10 @@ function buildFilters(data){
     data.unshift("all");
     data.forEach(cat=>{
         const a = document.createElement("a");
-        a.dataset.filter = cat;
         a.href="#";
-        a.textContent = cat[0].toUpperCase() + cat.substring(1)
+        a.textContent = cat;
+		a.addEventListener('click', ()=>filterData(cat));
         document.querySelector("nav").appendChild(a);
-    });
-    let filterLinks = document.querySelectorAll("nav a");
-    filterLinks.forEach(link=>{
-        link.addEventListener('click', ()=>filterData(link));
     });
 }
 function save(data){
@@ -44,8 +40,8 @@ function filterData(myFilter){
 	h1.textContent=myFilter.textContent;
     main.textContent="";
     let filterList=productlist;
-    if(myFilter.dataset.filter!="all"){
-        filterList = productlist.filter(product=>product.category == myFilter.dataset.filter);
+    if(myFilter!="all"){
+        filterList = productlist.filter(product=>product.category == myFilter);
     }
 	show(filterList);
 }
