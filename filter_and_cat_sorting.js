@@ -4,6 +4,8 @@ const main = document.querySelector('main');
 let catergorySections = [];
 const h1 = document.querySelector('h1');
 const nav = document.querySelector("nav");
+const all = document.querySelector("#all");
+all.addEventListener('click', ()=>filterData("all"));
 
 const catlink = "http://kea-alt-del.dk/t5/api/categories";
 const plink = "http://kea-alt-del.dk/t5/api/productlist";
@@ -49,10 +51,8 @@ function show(data){
 function filterData(myFilter){
 	catergorySections.forEach(function(sec){
 		sec.classList.remove("hide");
-		console.log(sec);
-		if(sec.id != myFilter){
+		if(sec.id != myFilter && myFilter != "all"){
 			sec.classList.add("hide");
 		}
-	})
-
+	});
 }
