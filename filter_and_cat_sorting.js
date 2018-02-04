@@ -15,8 +15,10 @@ fetch(catlink).then(e=>e.json()).then(sortByCategory);
 function sortByCategory(data){
 	//data.unshift("all");
 	data.forEach(cat=>{
+		//nogen grund til at du ikke clon'er en template her?
 		const section = document.createElement("section");
 		section.id=cat;
+		//nogen grund til du ikke bruger clasList?
 		section.setAttribute("class", "category");
 		const h2 = document.createElement("h2");
 		h2.textContent=cat;
