@@ -1,7 +1,6 @@
 "use strict"
 const template = document.querySelector('template').content;
 const main = document.querySelector('main');
-let catergorySections = [];
 const h1 = document.querySelector('h1');
 const nav = document.querySelector("nav");
 const all = document.querySelector("#all");
@@ -11,9 +10,9 @@ const catlink = "http://kea-alt-del.dk/t5/api/categories";
 const plink = "http://kea-alt-del.dk/t5/api/productlist";
 const imglink = "http://kea-alt-del.dk/t5/site/imgs/"
 
-fetch(catlink).then(e=>e.json()).then(buildFilters);
+fetch(catlink).then(e=>e.json()).then(sortByCategory);
 
-function buildFilters(data){
+function sortByCategory(data){
 	//data.unshift("all");
 	data.forEach(cat=>{
 		const section = document.createElement("section");
@@ -28,7 +27,6 @@ function buildFilters(data){
 		nav.appendChild(a);
 		section.appendChild(h2);
 		main.append(section);
-		catergorySections.push(section);
 	});
 	getPlist(plink);
 }
@@ -49,7 +47,7 @@ function show(data){
 }
 
 function filterData(myFilter){
-	catergorySections.forEach(function(sec){
+	document.querySelectorAll('main section').forEach(function(sec){
 		sec.classList.remove("hide");
 		if(sec.id != myFilter && myFilter != "all"){
 			sec.classList.add("hide");
