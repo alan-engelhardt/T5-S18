@@ -11,18 +11,14 @@ fetch(link).then(result=>result.json()).then(data=>save(data));
 fetch("http://kea-alt-del.dk/t5/api/categories").then(e=>e.json()).then(buildFilters);
 
 function buildFilters(data){
-    data.unshift("all");
-    data.forEach(cat=>{
-        const a = document.createElement("a");
-        a.dataset.filter = cat;
-        a.href="#";
-        a.textContent = cat[0].toUpperCase() + cat.substring(1)
-        document.querySelector("nav").appendChild(a);
-    });
-    let filterLinks = document.querySelectorAll("nav a");
-    filterLinks.forEach(link=>{
-        link.addEventListener('click', ()=>filterData(link));
-    });
+	data.unshift("all");
+	data.forEach(cat=>{
+		const a = document.createElement("a");
+		a.href="#";
+		a.textContent = cat[0].toUpperCase() + cat.substring(1)
+		a.addEventListener('click', ()=>filterData(cat));
+		document.querySelector("nav").appendChild(a);
+	});
 }
 function save(data){
 	productlist = data;
@@ -31,7 +27,7 @@ function save(data){
 
 function show(data){
 	data.forEach(elem=>{
-        console.log(elem.category)
+		console.log(elem.id)
 		const clone = template.cloneNode(true);
 		clone.querySelector("img").src="http://kea-alt-del.dk/t5/site/imgs/small/" + elem.image + "-sm.jpg";
 		clone.querySelector("h2").textContent=elem.name;
@@ -42,10 +38,10 @@ function show(data){
 
 function filterData(myFilter){
 	h1.textContent=myFilter.textContent;
-    main.textContent="";
-    let filterList=productlist;
-    if(myFilter.dataset.filter!="all"){
-        filterList = productlist.filter(product=>product.category == myFilter.dataset.filter);
-    }
+	main.textContent="";
+	let filterList=productlist;
+	if(myFilter!="all"){
+		filterList = productlist.filter(product=>product.category == myFilter);
+	}
 	show(filterList);
 }
