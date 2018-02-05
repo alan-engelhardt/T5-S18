@@ -1,55 +1,52 @@
 "use strict"
 const template = document.querySelector('template').content;
 const main = document.querySelector('main');
-const h1 = document.querySelector('h1');
-const nav = document.querySelector("nav");
+const nav = document.querySelector('nav');
 
-const all = document.querySelector("#all");
-all.addEventListener('click', () => filterData("all"));
+const all = document.querySelector('nav a');
+all.addEventListener("click", ()=>filter("all"));
 
-const catlink = "http://kea-alt-del.dk/t5/api/categories";
-const plink = "http://kea-alt-del.dk/t5/api/productlist";
 const imglink = "http://kea-alt-del.dk/t5/site/imgs/"
 
-fetch(catlink).then(e => e.json()).then(sort);
+const catLink = "http://kea-alt-del.dk/t5/api/categories";
+const pListLink = "http://kea-alt-del.dk/t5/api/productlist";
 
-function sort(data) {
-	data.forEach(cat => {
+fetch(catLink).then(result=>result.json()).then(data=>createCats(data));
+
+function createCats(categories){
+	categories.forEach(category=>{
 		const section = document.createElement("section");
 		const h2 = document.createElement("h2");
-		section.id = cat;
-		h2.textContent = cat;
+		section.id = category;
+		h2.textContent = category;
 		section.appendChild(h2);
 		main.appendChild(section);
 		const a = document.createElement("a");
+		a.textContent = category;
 		a.href = "#";
-		a.textContent = cat;
-		a.addEventListener('click', () => filterData(cat));
+		a.addEventListener("click", ()=>filter(category));
 		nav.appendChild(a);
 	});
-	getPlist(plink);
+	fetch(pListLink).then(result=>result.json()).then(data=>show(data));
 }
 
-function getPlist(link) {
-	fetch(plink).then(result => result.json()).then(data => show(data));
-}
-
-function show(data) {
-	data.forEach(elem => {
-		const section = document.querySelector("#" + elem.category);
+function show(data){
+	data.forEach(elem=>{
+		const section = document.querySelector("#"+elem.category);
 		const clone = template.cloneNode(true);
-		clone.querySelector("img").src = "http://kea-alt-del.dk/t5/site/imgs/small/" + elem.image + "-sm.jpg";
-		clone.querySelector("h2").textContent = elem.name;
-		clone.querySelector("p").textContent = elem.category + ", " + elem.shortdescription;
+		clone.querySelector("img").src=imglink+"small/"+elem.image+"-sm.jpg";
+		clone.querySelector("h2").textContent=elem.name;
+		clone.querySelector("p").textContent=elem.shortdescription;
 		section.appendChild(clone);
-	});
+	})
 }
 
-function filterData(myFilter) {
-	document.querySelectorAll('main section').forEach(function (sec) {
-		sec.classList.remove("hide");
-		if (sec.id != myFilter && myFilter != "all") {
-			sec.classList.add("hide");
+function filter(category){
+	document.querySelectorAll("main section").forEach(section=>{
+		if(section.id == category || category == "all"){
+			section.classList.remove('hide');
+		}else{
+			section.classList.add('hide');
 		}
-	});
+	})
 }
