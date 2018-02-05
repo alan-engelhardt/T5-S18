@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			main{
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+				grid-gap: .5em;
+			}
+			article{
+				background: #cde;
+			}
+
+			article:nth-child(even){
+				background: red;
+			}
+			img{
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>A list of stuff</h1>
+		<main></main>
+		<template>
+			<article>
+				<img alt="product image">
+				<h2>Product name</h2>
+				<p>Description</p>
+			</article>
+		</template>
+		<script src="temp.js"></script>
+	</body>
+</html>
