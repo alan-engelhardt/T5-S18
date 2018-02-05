@@ -8,10 +8,18 @@ fetch(link).then(result=>result.json()).then(data=>show(data));
 
 function show(data){
 	data.forEach(elem=>{
+    //console.log(elem)
 		const clone = template.cloneNode(true);
 		clone.querySelector("img").src="http://kea-alt-del.dk/t5/site/imgs/small/" + elem.image + "-sm.jpg";
 		clone.querySelector("h2").textContent=elem.name;
 		clone.querySelector("p").textContent=elem.shortdescription;
+    clone.querySelector(".price span").textContent=elem.price;
+    if(elem.discount){
+      const newPrice = Math.ceil(elem.price - elem.price * elem.discount / 100);
+      clone.querySelector(".discountprice span").textContent=newPrice;
+      clone.querySelector(".discountprice.hide").classList.remove("hide")
+      clone.querySelector(".price").classList.add("strike");
+    }
 		main.appendChild(clone);
 	})
 }

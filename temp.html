@@ -12,6 +12,7 @@
 			}
 			article{
 				background: #cde;
+        position:relative;
 			}
 
 			article:nth-child(even){
@@ -20,6 +21,28 @@
 			img{
 				width: 100%;
 			}
+      .price, .discountprice {
+        position: absolute;
+        top:0;
+        margin:0;
+        padding: 0.5em;
+
+        background: #ccc;
+      }
+      .price {
+        left:0;
+      }
+      .discountprice {
+        right:0;
+        background: yellowgreen;
+      }
+      .hide {
+
+        display: none;
+      }
+      .strike {
+        text-decoration: line-through;
+      }
 		</style>
 	</head>
 	<body>
@@ -29,6 +52,8 @@
 			<article>
 				<img alt="product image">
 				<h2>Product name</h2>
+				<h3 class="price"><span>PRICE</span>,-</h3>
+				<h3 class="discountprice hide"><span>PRICE</span>,-</h3>
 				<p>Description</p>
 			</article>
 		</template>
