@@ -8,7 +8,7 @@ fetch(link).then(result=>result.json()).then(data=>show(data));
 
 function show(data){
 	data.forEach(elem=>{
-    //console.log(elem)
+    console.log(elem)
 		const clone = template.cloneNode(true);
 		clone.querySelector("img").src="http://kea-alt-del.dk/t5/site/imgs/small/" + elem.image + "-sm.jpg";
 		clone.querySelector("h2").textContent=elem.name;
@@ -20,6 +20,29 @@ function show(data){
       clone.querySelector(".discountprice.hide").classList.remove("hide")
       clone.querySelector(".price").classList.add("strike");
     }
+    if(elem.alcohol){//elem.alcohol = 0;
+      console.log("alcohol")
+      const newImage = document.createElement("img");
+      newImage.setAttribute("src", "gfx/alc.png");
+      newImage.setAttribute("alt", "Contains alcohol " + elem.alcohol + "%");
+      newImage.setAttribute("title", "Contains alcohol " + elem.alcohol + "%");
+      clone.querySelector(".icons").appendChild(newImage);
+    }
 		main.appendChild(clone);
 	})
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
