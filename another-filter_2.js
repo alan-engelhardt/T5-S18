@@ -16,7 +16,7 @@ function buildFilters(data){
 		const a = document.createElement("a");
 		a.href="#";
 		a.textContent = cat[0].toUpperCase() + cat.substring(1)
-		a.addEventListener('click', ()=>filterData(cat));
+		a.addEventListener('click', ()=>filterData(cat)); //no need for data attributes
 		document.querySelector("nav").appendChild(a);
 	});
 }

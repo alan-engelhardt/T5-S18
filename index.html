@@ -2,10 +2,10 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Document</title>
+		<title>Filter</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<style>
-			main{
+			section{
 				display: grid;
 				grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
 				grid-gap: .5em;
@@ -13,16 +13,32 @@
 			article{
 				background: #cde;
 			}
-
+			section h2{
+				grid-column: 1/-1;
+			}
 			article:nth-child(even){
-				background: red;
+				background: #9ab;
 			}
 			img{
 				width: 100%;
 			}
+			nav a, main h2{
+				text-transform: capitalize;
+				padding: .5em;
+			}
+
+			.hide{
+				display: none;
+			}
+
 		</style>
 	</head>
 	<body>
+
+        <nav>
+        	<a href="#" id="all">All</a>
+        </nav>
+
 		<h1>A list of stuff</h1>
 		<main></main>
 		<template>
@@ -32,6 +48,6 @@
 				<p>Description</p>
 			</article>
 		</template>
-		<script src="temp.js"></script>
+		<script src="filter_and_cat_sorting.js"></script>
 	</body>
 </html>
