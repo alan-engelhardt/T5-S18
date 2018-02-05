@@ -13,6 +13,8 @@
 			article{
 				background: #cde;
 				position:relative;
+        transition: 0.3s all;
+        filter: grayscale(100%)
 			}
 
 			section h2{
@@ -24,7 +26,11 @@
 			}
 			article>img{
 				width: 100%;
+
 			}
+      article:hover {
+        filter: grayscale(0%);
+      }
 			.price, .discountprice {
 				position: absolute;
 				top:0;
