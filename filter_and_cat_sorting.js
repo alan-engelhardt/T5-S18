@@ -48,7 +48,7 @@ function show(data) {
 function filterData(myFilter) {
 	document.querySelectorAll('main section').forEach(function (sec) {
 		sec.classList.remove("hide");
-		if (sec.id != myFilter) {
+		if (sec.id != myFilter && myFilter != "all") {
 			sec.classList.add("hide");
 		}
 	});
