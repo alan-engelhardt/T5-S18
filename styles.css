@@ -28,6 +28,7 @@ nav{
 	position: fixed;
 	left: 0;
 	right: 0;
+	z-index: 10;
 }
 nav a{
 	color: #9d9d9d;
@@ -59,6 +60,10 @@ article>img, .modal img{
 }
 article{
 	position: relative;
+}
+#menu{
+	font-size: 1.4em;
+	border-bottom: 1px solid;
 }
 .price, .discountprice {
 	position: absolute;
