@@ -18,6 +18,7 @@ function createCatContainers(categories){
 		a.addEventListener("click", ()=>filter(category));
 		nav.appendChild(a);
 		const h2 = document.createElement("h2");
+		section.classList.add("catContainer");
 		section.id = category;
 		h2.textContent = category;
 		section.appendChild(h2);
@@ -41,7 +42,7 @@ function showProducts(data){
 		const section = document.querySelector("#"+elem.category);
 		const clone = template.cloneNode(true);
 		clone.querySelector("img").src="http://kea-alt-del.dk/t5/site/imgs/small/" + elem.image + "-sm.jpg";
-		clone.querySelector("h2").textContent=elem.name;
+		clone.querySelector("h3").textContent=elem.name;
 		clone.querySelector("p").textContent=elem.shortdescription;
 		clone.querySelector(".price span").textContent=elem.price;
 		if(elem.discount){

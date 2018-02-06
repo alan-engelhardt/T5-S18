@@ -1,0 +1,54 @@
+.catContainer{
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+	grid-gap: .5em;
+}
+article{
+	background: #cde;
+	position:relative;
+}
+
+section h2{
+	grid-column: 1/-1;
+}
+
+article:nth-child(even){
+	background: red;
+}
+article>img{
+	width: 100%;
+}
+.price, .discountprice {
+	position: absolute;
+	top:0;
+	margin:0;
+	padding: 0.5em;
+
+	background: #ccc;
+}
+.price {
+	left:0;
+}
+.discountprice {
+	right:0;
+	background: yellowgreen;
+}
+.hide {
+
+	display: none;
+}
+.strike {
+	text-decoration: line-through;
+}
+nav a{
+	padding: 1em;
+	text-transform: capitalize;
+}
+
+section h2{
+	text-transform: capitalize;
+}
+
+#menu{
+	background: red;
+}
