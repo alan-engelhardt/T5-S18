@@ -23,23 +23,21 @@
 		<script>
 			const catLink = "http://kea-alt-del.dk/t5/api/categories";
 			const pListLink = "http://kea-alt-del.dk/t5/api/productlist";
-			const pLink = "http://kea-alt-del.dk/t5/api/product?id=";
 			const main = document.querySelector("main");
-			let plist = [];
 
-			fetch(catLink).then(res=>res.json()).then(data=>data.forEach(fetcFilter));
+			fetch(catLink).then(result=>result.json()).then(data=>data.forEach(sort));
 
-			function fetcFilter(myFilter){
+			function sort(category){
 				const h1 = document.createElement("h1");
 				const section = document.createElement("section");
-				h1.textContent = myFilter;
+				h1.textContent = category;
 				section.appendChild(h1);
-				fetch(pListLink).then(res=>res.json()).then(data=>{
-					let sublist = data.filter(elm=>elm.category == myFilter);
+				fetch(pListLink).then(result=>result.json()).then(data=>{
+					let sublist = data.filter(product=>product.category == category);
 					console.log(sublist);
-					sublist.forEach(elm=>{
+					sublist.forEach(product=>{
 						const article = document.createElement("article");
-						article.textContent = elm.name;
+						article.textContent = product.name;
 						section.appendChild(article);
 					});
 					main.appendChild(section);
