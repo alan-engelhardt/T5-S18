@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<style>
+			section{
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+				grid-gap: .5em;
+			}
+			section h1{
+				grid-column: 1/-1;
+			}
+			article{
+				background: #cde;
+				padding: 1em;
+			}
+		</style>
+	</head>
+	<body>
+		<main></main>
+		<script>
+			const catLink = "http://kea-alt-del.dk/t5/api/categories";
+			const pListLink = "http://kea-alt-del.dk/t5/api/productlist";
+			const pLink = "http://kea-alt-del.dk/t5/api/product?id=";
+			const main = document.querySelector("main");
+			let plist = [];
+
+			fetch(catLink).then(res=>res.json()).then(data=>data.forEach(fetcFilter));
+
+			function fetcFilter(myFilter){
+				const h1 = document.createElement("h1");
+				const section = document.createElement("section");
+				h1.textContent = myFilter;
+				section.appendChild(h1);
+				fetch(pListLink).then(res=>res.json()).then(data=>{
+					let sublist = data.filter(elm=>elm.category == myFilter);
+					console.log(sublist);
+					sublist.forEach(elm=>{
+						const article = document.createElement("article");
+						article.textContent = elm.name;
+						section.appendChild(article);
+					});
+					main.appendChild(section);
+				});
+			}
+
+			//fetcFilter("dessert");
+		</script>
+	</body>
+</html>
