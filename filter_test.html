@@ -25,15 +25,15 @@
 			const pListLink = "http://kea-alt-del.dk/t5/api/productlist";
 			const main = document.querySelector("main");
 
-			fetch(catLink).then(result=>result.json()).then(data=>data.forEach(sort));
+			//fetch(catLink).then(result=>result.json()).then(data=>data.forEach(sort));
 
-			function sort(category){
+			function sort(myFilter){
 				const h1 = document.createElement("h1");
 				const section = document.createElement("section");
-				h1.textContent = category;
+				h1.textContent = myFilter;
 				section.appendChild(h1);
 				fetch(pListLink).then(result=>result.json()).then(data=>{
-					let sublist = data.filter(product=>product.category == category);
+					let sublist = data.filter(product=>product.myFilter); //virker ikke...
 					console.log(sublist);
 					sublist.forEach(product=>{
 						const article = document.createElement("article");
@@ -43,6 +43,8 @@
 					main.appendChild(section);
 				});
 			}
+
+			sort("alcohol");
 		</script>
 	</body>
 </html>
