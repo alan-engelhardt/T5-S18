@@ -2,9 +2,13 @@
 const template = document.querySelector('template').content;
 const main = document.querySelector('main');
 const nav = document.querySelector('nav');
+const modal = document.querySelector('#modal');
 const catLink = "http://kea-alt-del.dk/t5/api/categories";
 const pListLink = "http://kea-alt-del.dk/t5/api/productlist";
-const imglink = "http://kea-alt-del.dk/t5/site/imgs/"
+const pLink = "http://kea-alt-del.dk/t5/api/product?id=";
+const imglink = "http://kea-alt-del.dk/t5/site/imgs/";
+
+modal.addEventListener("click", ()=>modal.classList.add("hide"));
 
 fetch(catLink).then(result=>result.json()).then(data=>createCatContainers(data));
 
@@ -18,6 +22,7 @@ function createCatContainers(categories){
 		a.addEventListener("click", ()=>filter(category));
 		nav.appendChild(a);
 		const h2 = document.createElement("h2");
+		section.classList.add("catContainer");
 		section.id = category;
 		h2.textContent = category;
 		section.appendChild(h2);
@@ -36,14 +41,25 @@ function filter(myFilter){
 	})
 }
 
+function showDetails(product){
+	console.log(product);
+	modal.querySelector("h1").textContent=product.name;
+	modal.querySelector("p").textContent=product.longdescription;
+	modal.classList.remove("hide");
+}
+
 function showProducts(data){
 	data.forEach(elem=>{
+		console.log(elem.id);
 		const section = document.querySelector("#"+elem.category);
 		const clone = template.cloneNode(true);
 		clone.querySelector("img").src="http://kea-alt-del.dk/t5/site/imgs/small/" + elem.image + "-sm.jpg";
-		clone.querySelector("h2").textContent=elem.name;
+		clone.querySelector("h3").textContent=elem.name;
 		clone.querySelector("p").textContent=elem.shortdescription;
 		clone.querySelector(".price span").textContent=elem.price;
+		clone.querySelector("button").addEventListener("click", ()=>{
+			fetch(pLink+elem.id).then(result=>result.json()).then(product=>showDetails(product));
+		})
 		if(elem.discount){
 			const newPrice = Math.ceil(elem.price - elem.price * elem.discount / 100);
 			clone.querySelector(".discountprice span").textContent=newPrice;
@@ -53,7 +69,7 @@ function showProducts(data){
 		if(elem.alcohol){//elem.alcohol could be 0;
 			console.log("alcohol")
 			const newImage = document.createElement("img");
-			newImage.setAttribute("src", "gfx/alc.png");
+			newImage.setAttribute("src", "images/alc.png");
 			newImage.setAttribute("alt", "Contains alcohol " + elem.alcohol + "%");
 			newImage.setAttribute("title", "Contains alcohol " + elem.alcohol + "%");
 			clone.querySelector(".icons").appendChild(newImage);
