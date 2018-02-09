@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<style>
+			section{
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+				grid-gap: .5em;
+			}
+			section h1{
+				grid-column: 1/-1;
+			}
+			article{
+				background: #cde;
+				padding: 1em;
+			}
+		</style>
+	</head>
+	<body>
+		<main></main>
+		<script>
+			const catLink = "http://kea-alt-del.dk/t5/api/categories";
+			const pListLink = "http://kea-alt-del.dk/t5/api/productlist";
+			const main = document.querySelector("main");
+			let pList = [];
+
+			fetch(pListLink).then(result=>result.json()).then(data=>save(data));
+
+			function save(data){
+				pList = data;
+				fetch(catLink).then(result=>result.json()).then(data=>data.forEach(sort));
+			}
+
+			function sort(category){
+				const h1 = document.createElement("h1");
+				const section = document.createElement("section");
+				h1.textContent = category;
+				section.appendChild(h1);
+				let sublist = pList.filter(product=>product.category == category);
+				console.log(sublist);
+				sublist.forEach(product=>{
+					const article = document.createElement("article");
+					article.textContent = product.name;
+					section.appendChild(article);
+				});
+				main.appendChild(section);
+			};
+
+		</script>
+	</body>
+</html>
