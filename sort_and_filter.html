@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Sort with filter</title>
+		<title>Sort and filter</title>
 		<style>
 			section{
 				display: grid;
@@ -30,15 +30,15 @@
 
 			function save(data){
 				pList = data;
-				fetch(catLink).then(result=>result.json()).then(data=>data.forEach(sort));
+				fetch(catLink).then(result=>result.json()).then(data=>data.forEach(()=>sort("category", data)));
 			}
 
-			function sort(category){
+			function sort(prop, myfilter = null){
 				const h1 = document.createElement("h1");
 				const section = document.createElement("section");
-				h1.textContent = category;
+				h1.textContent = myfilter;
 				section.appendChild(h1);
-				let sublist = pList.filter(product=>product.category == category);
+				let sublist = pList.filter(product=>product[prop] == myfilter);
 				sublist.forEach(product=>{
 					const article = document.createElement("article");
 					article.textContent = product.name;
@@ -46,6 +46,8 @@
 				});
 				main.appendChild(section);
 			};
+
+
 
 		</script>
 	</body>

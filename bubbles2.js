@@ -9,7 +9,8 @@ function makeBubbles(){
 	const vh = window.innerHeight;
 	console.log((Math.floor(vw*vh/10000)));
 	const area = Math.floor(vw*vh/10000);
-	for(let i=0; i<5*area; i++){
+		console.log(5*area);
+	for(let i=0; i<6*area; i++){
 		let randX = Math.floor(Math.random()*vw);
 		let randY = Math.floor(Math.random()*vh);
 		let randR = Math.floor(Math.random()*30+10);
