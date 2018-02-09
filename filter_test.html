@@ -25,7 +25,7 @@
 			const pListLink = "http://kea-alt-del.dk/t5/api/productlist";
 			const main = document.querySelector("main");
 
-			//fetch(catLink).then(result=>result.json()).then(data=>data.forEach(sort));
+			fetch(catLink).then(result=>result.json()).then(data=>data.forEach(sort));
 
 			function sort(myFilter){
 				const h1 = document.createElement("h1");
@@ -33,7 +33,7 @@
 				h1.textContent = myFilter;
 				section.appendChild(h1);
 				fetch(pListLink).then(result=>result.json()).then(data=>{
-					let sublist = data.filter(product=>product.myFilter); //virker ikke...
+					let sublist = data.filter(product=>product[myFilter]);
 					console.log(sublist);
 					sublist.forEach(product=>{
 						const article = document.createElement("article");
@@ -44,7 +44,51 @@
 				});
 			}
 
-			sort("alcohol");
+			sort("discount");
+
+
+
+
+
+
+
+
+
+			const myArray0 = [1, 4, 7, 4, 9, 10, 34, 67, 78, 123, 456];
+			const myArray = [
+				{
+					firstname: "hans",
+					lastname: "hansen",
+					born: 1990
+				},
+				{
+					firstname: "ole",
+					lastname: "hansen",
+					born: 1950
+				},
+				{
+					firstname: "jens",
+					lastname: "jensen",
+					born: 1950
+				},
+				{
+					firstname: "niels",
+					lastname: "jensen",
+					born: 1985
+				}
+			];
+
+			let newArray = myArray.filter(elm=>elm.born == 1950);
+
+			newArray.forEach(elm=>console.log(elm));
+
+/*			myArray.filter(doStuff);
+
+			function doStuff(elm){
+				return elm.born == 1950;
+			}
+*/
+
 		</script>
 	</body>
 </html>
