@@ -16,29 +16,65 @@
 				background: #cde;
 				padding: 1em;
 			}
+			nav a{
+				padding: 1em;
+			}
 		</style>
 	</head>
 	<body>
+		<nav>
+			<a href="#" id="alcoB">Alcohol</a>
+			<a href="#" id="dessertB">Dessert</a>
+		</nav>
 		<main></main>
 		<script>
 			const catLink = "http://kea-alt-del.dk/t5/api/categories";
 			const pListLink = "http://kea-alt-del.dk/t5/api/productlist";
 			const main = document.querySelector("main");
+			const nav = document.querySelector("nav");
+			const alcoB = document.querySelector("#alcoB");
+			const dessertB = document.querySelector("#dessertB");
 			let pList = [];
+			let sublist = [];
+
+			dessertB.addEventListener("click", ()=>{
+				main.textContent="";
+				sort("category", "dessert");
+			});
+
+			alcoB.addEventListener("click", ()=>{
+				main.textContent="";
+				sort("alcohol");
+			});
 
 			fetch(pListLink).then(result=>result.json()).then(data=>save(data));
 
 			function save(data){
 				pList = data;
-				fetch(catLink).then(result=>result.json()).then(data=>data.forEach(()=>sort("category", data)));
+				fetch(catLink).then(result=>result.json()).then(data=>data.forEach(elm=>{
+					const a = document.createElement("a");
+					a.href = "#";
+					a.textContent = elm;
+					a.addEventListener("click", event=>{
+						main.textContent="";
+						sort("category", elm)
+						console.log(event.target.textContent);
+					});
+					nav.appendChild(a);
+					sort("category", elm);
+				}));
 			}
 
-			function sort(prop, myfilter = null){
+			function sort(prop, myfilter){
 				const h1 = document.createElement("h1");
-				const section = document.createElement("section");
 				h1.textContent = myfilter;
+				const section = document.createElement("section");
 				section.appendChild(h1);
-				let sublist = pList.filter(product=>product[prop] == myfilter);
+				if(myfilter){
+					sublist = pList.filter(product=>product[prop] == myfilter);
+				}else{
+					sublist = pList.filter(product=>product[prop]);
+				}
 				sublist.forEach(product=>{
 					const article = document.createElement("article");
 					article.textContent = product.name;
@@ -46,9 +82,6 @@
 				});
 				main.appendChild(section);
 			};
-
-
-
 		</script>
 	</body>
 </html>
