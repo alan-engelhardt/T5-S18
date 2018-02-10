@@ -22,66 +22,65 @@
 		</style>
 	</head>
 	<body>
-		<nav>
-			<a href="#" id="alcoB">Alcohol</a>
-			<a href="#" id="dessertB">Dessert</a>
-		</nav>
+		<nav></nav>
 		<main></main>
 		<script>
 			const catLink = "http://kea-alt-del.dk/t5/api/categories";
 			const pListLink = "http://kea-alt-del.dk/t5/api/productlist";
 			const main = document.querySelector("main");
 			const nav = document.querySelector("nav");
-			const alcoB = document.querySelector("#alcoB");
-			const dessertB = document.querySelector("#dessertB");
 			let pList = [];
 			let sublist = [];
-
-			dessertB.addEventListener("click", ()=>{
-				main.textContent="";
-				sort("category", "dessert");
-			});
-
-			alcoB.addEventListener("click", ()=>{
-				main.textContent="";
-				sort("alcohol");
-			});
 
 			fetch(pListLink).then(result=>result.json()).then(data=>save(data));
 
 			function save(data){
 				pList = data;
+				createCats();
+				Object.entries(data[0]).forEach(elm=>{
+					if(typeof(elm[1])!="string" && elm[0]!="price"){
+						createLinks(elm[0], elm[0], null);
+					}
+				});
+			}
+
+			function createCats(){
 				fetch(catLink).then(result=>result.json()).then(data=>data.forEach(elm=>{
-					const a = document.createElement("a");
-					a.href = "#";
-					a.textContent = elm;
-					a.addEventListener("click", event=>{
-						main.textContent="";
-						sort("category", elm)
-						console.log(event.target.textContent);
-					});
-					nav.appendChild(a);
+					createLinks("category", elm, elm);
 					sort("category", elm);
 				}));
 			}
 
+			function createLinks(prop, text, filt){
+				const a = document.createElement("a");
+				a.href = "#";
+				a.textContent = text;
+				a.addEventListener("click", event=>{
+					main.textContent="";
+					sort(prop, filt);
+				});
+				nav.prepend(a);
+			}
+
 			function sort(prop, myfilter){
 				const h1 = document.createElement("h1");
-				h1.textContent = myfilter;
 				const section = document.createElement("section");
-				section.appendChild(h1);
 				if(myfilter){
+					console.log(prop, myfilter);
 					sublist = pList.filter(product=>product[prop] == myfilter);
+					h1.textContent = myfilter;
 				}else{
 					sublist = pList.filter(product=>product[prop]);
+					h1.textContent = prop;
 				}
 				sublist.forEach(product=>{
 					const article = document.createElement("article");
 					article.textContent = product.name;
 					section.appendChild(article);
 				});
+				section.prepend(h1);
 				main.appendChild(section);
-			};
+			}
 		</script>
 	</body>
 </html>
