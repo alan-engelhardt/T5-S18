@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Sort and filter</title>
+		<style>
+			section{
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+				grid-gap: .5em;
+			}
+			section h1{
+				grid-column: 1/-1;
+			}
+			article{
+				background: #cde;
+				padding: 1em;
+			}
+			nav a{
+				padding: 1em;
+			}
+		</style>
+	</head>
+	<body>
+		<nav></nav>
+		<main></main>
+		<script>
+			const catLink = "http://kea-alt-del.dk/t5/api/categories";
+			const pListLink = "http://kea-alt-del.dk/t5/api/productlist";
+			const main = document.querySelector("main");
+			const nav = document.querySelector("nav");
+			let pList = [];
+			let sublist = [];
+
+			fetch(pListLink).then(result=>result.json()).then(data=>save(data));
+
+			function save(data){
+				pList = data;
+				createCats();
+				Object.entries(data[0]).forEach(elm=>{
+					if(typeof(elm[1])!="string" && elm[0]!="price"){
+						createLinks(elm[0], elm[0], null);
+					}
+				});
+			}
+
+			function createCats(){
+				fetch(catLink).then(result=>result.json()).then(data=>data.forEach(elm=>{
+					createLinks("category", elm, elm);
+					sort("category", elm);
+				}));
+			}
+
+			function createLinks(prop, text, filt){
+				const a = document.createElement("a");
+				a.href = "#";
+				a.textContent = text;
+				a.addEventListener("click", event=>{
+					main.textContent="";
+					sort(prop, filt);
+				});
+				nav.prepend(a);
+			}
+
+			function sort(prop, myfilter){
+				const h1 = document.createElement("h1");
+				const section = document.createElement("section");
+				if(myfilter){
+					console.log(prop, myfilter);
+					sublist = pList.filter(product=>product[prop] == myfilter);
+					h1.textContent = myfilter;
+				}else{
+					sublist = pList.filter(product=>product[prop]);
+					h1.textContent = prop;
+				}
+				sublist.forEach(product=>{
+					const article = document.createElement("article");
+					article.textContent = product.name;
+					section.appendChild(article);
+				});
+				section.prepend(h1);
+				main.appendChild(section);
+			}
+		</script>
+	</body>
+</html>
