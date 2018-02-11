@@ -31,6 +31,7 @@
 			const nav = document.querySelector("nav");
 			let pList = [];
 			let sublist = [];
+			let catlist = [];
 
 			fetch(pListLink).then(result=>result.json()).then(data=>save(data));
 
@@ -45,10 +46,14 @@
 			}
 
 			function createCats(){
-				fetch(catLink).then(result=>result.json()).then(data=>data.forEach(elm=>{
-					createLinks("category", elm, elm);
-					sort("category", elm);
-				}));
+				createLinks("all", "all");
+				fetch(catLink).then(result=>result.json()).then(data=>{
+					catlist = data;
+					data.forEach(elm=>{
+						createLinks("category", elm, elm);
+						sort("category", elm);
+					});
+				})
 			}
 
 			function createLinks(prop, text, filt){
@@ -59,19 +64,24 @@
 					main.textContent="";
 					sort(prop, filt);
 				});
-				nav.prepend(a);
+				nav.appendChild(a);
 			}
 
 			function sort(prop, myfilter){
 				const h1 = document.createElement("h1");
 				const section = document.createElement("section");
 				if(myfilter){
-					console.log(prop, myfilter);
-					sublist = pList.filter(product=>product[prop] == myfilter);
 					h1.textContent = myfilter;
-				}else{
-					sublist = pList.filter(product=>product[prop]);
+					sublist = pList.filter(product=>product[prop] == myfilter);
+				}else if(prop=="all"){
 					h1.textContent = prop;
+					console.log(catlist);
+					catlist.forEach(elm=>{
+						sort("category", elm);
+					});
+				}else{
+					h1.textContent = prop;
+					sublist = pList.filter(product=>product[prop]);
 				}
 				sublist.forEach(product=>{
 					const article = document.createElement("article");
