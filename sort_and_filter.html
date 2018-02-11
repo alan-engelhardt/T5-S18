@@ -11,27 +11,42 @@
 			}
 			section h1{
 				grid-column: 1/-1;
+				text-transform: capitalize;
 			}
 			article{
 				background: #cde;
 				padding: 1em;
 			}
-			nav a{
-				padding: 1em;
+			select option{
+				text-transform: capitalize;
 			}
 		</style>
 	</head>
 	<body>
-		<nav></nav>
+		<select id="catSelect"></select>
+		<select id="filtSelect"></select>
 		<main></main>
 		<script>
 			const catLink = "http://kea-alt-del.dk/t5/api/categories";
 			const pListLink = "http://kea-alt-del.dk/t5/api/productlist";
 			const main = document.querySelector("main");
-			const nav = document.querySelector("nav");
+			const catSelect = document.querySelector("#catSelect");
+			const filtSelect = document.querySelector("#filtSelect");
 			let pList = [];
 			let sublist = [];
 			let catlist = [];
+
+			catSelect.addEventListener("change", event=>{
+				const filt = event.target.value;
+				main.textContent="";
+				sort("category", filt);
+			});
+
+			filtSelect.addEventListener("change", event=>{
+				const prop = event.target.value;
+				main.textContent="";
+				sort(prop, null);
+			});
 
 			fetch(pListLink).then(result=>result.json()).then(data=>save(data));
 
@@ -40,31 +55,31 @@
 				createCats();
 				Object.entries(data[0]).forEach(elm=>{
 					if(typeof(elm[1])!="string" && elm[0]!="price"){
-						createLinks(elm[0], elm[0], null);
+						let option = createLinks(elm[0], elm[0], null);
+						filtSelect.appendChild(option);
 					}
 				});
 			}
 
 			function createCats(){
-				createLinks("all", "all");
+				let option = createLinks("all", "all");
+				catSelect.appendChild(option);
 				fetch(catLink).then(result=>result.json()).then(data=>{
 					catlist = data;
 					data.forEach(elm=>{
-						createLinks("category", elm, elm);
+						option = createLinks("category", elm, elm);
 						sort("category", elm);
+						catSelect.appendChild(option);
 					});
-				})
+				});
 			}
 
 			function createLinks(prop, text, filt){
-				const a = document.createElement("a");
-				a.href = "#";
-				a.textContent = text;
-				a.addEventListener("click", event=>{
-					main.textContent="";
-					sort(prop, filt);
-				});
-				nav.appendChild(a);
+				const option = document.createElement("option");
+				option.href = "#";
+				option.textContent = text;
+				option.value = text;
+				return option;
 			}
 
 			function sort(prop, myfilter){
@@ -74,7 +89,6 @@
 					h1.textContent = myfilter;
 					sublist = pList.filter(product=>product[prop] == myfilter);
 				}else if(prop=="all"){
-					h1.textContent = prop;
 					console.log(catlist);
 					catlist.forEach(elm=>{
 						sort("category", elm);
